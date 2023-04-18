@@ -3,20 +3,11 @@ const { BoardModel, TaskModel, subtaskModel } = require("../model/kanbanModel")
 
 const KanbanRoutes = express.Router()
 
-KanbanRoutes.get("/getall", async (req, res) => {
-  try {
-    let data = await BoardModel.find().populate(["tasks", { path: "tasks", populate: { path: 'subtask' } }])
-    // let data = await BoardModel.find()
-    res.status(200).send(data)
-  } catch (err) {
-    res.send({ "msg": "Something went wrong", "error": err })
-  }
-})
-
 KanbanRoutes.get("/getboard", async (req, res) => {
-  
+  let userID = req.body.user
+  console.log('userID:', userID)
   try {
-    let data = await BoardModel.find({user:req.query}).populate(["tasks", { path: "tasks", populate: { path: 'subtask' } }])
+    let data = await BoardModel.find({user:userID}).populate(["tasks", { path: "tasks", populate: { path: 'subtask' } }])
     // let data = await BoardModel.find()
     res.status(200).send(data)
   } catch (err) {
