@@ -9,10 +9,10 @@ const userRouter = express.Router();
 userRouter.post("/signup",async(req,res) => {
     const {email,password} = req.body;
     try{
-        bcrypt.hash(password, 5, async(err,hash) => {
+        bcrypt.hash(password, 5, async(err,hash) => {  // Hash the Password 
             if(err) res.send({"Message":"Something Went Wrong","Error":err.message});
             else{
-                const user = new UserModel({email,password:hash});
+                const user = new UserModel({email,password:hash});   //hash the password and save in the model
                 await user.save();
                 res.send({"Message":"Registerd Sucessfully"});
             }
@@ -36,14 +36,14 @@ userRouter.get("/user",async(req,res) => {
 userRouter.post("/signin",async(req,res) => {
     const {email,password} = req.body;
     try{
-        const user=await UserModel.find({email});
+        const user=await UserModel.find({email});  // find the email from the DB
         if(user.length > 0){
-            bcrypt.compare(password, user[0].password, function(err, result) {
+            bcrypt.compare(password, user[0].password, function(err, result) {  // compare the user entered password and DB hash pwd
              if(result){
-             const token = jwt.sign({ userID:user[0]._id}, 'masai');
+             const token = jwt.sign({ userID:user[0]._id}, 'masai');  //Generate the token and store user id in the userID key, for  accessability
 
             res.send({Message:"Login Successfull","token":token})
-            } else {res.send({Message : "Wrong Credntials"})}
+            } else {res.send({Message : "Wrong Credentials"})}
             });
         }
         else{
