@@ -165,10 +165,9 @@ KanbanRoutes.delete("/deletetask/:boardid/:taskid", async (req, res) => {
 KanbanRoutes.delete("/deletesubtask/:taskid/:subtaskid", async (req, res) => {
   let taskid = req.params.taskid
   let subtaskid = req.params.subtaskid
-// console.log("taskid", taskid, "sub", subtaskid);
+
   try {
     let board = await TaskModel.findById(taskid);
-    // console.log("board", board);
     let newSubTaskArr = board.subtask.filter((el)=>{
       return el!=subtaskid
     })
@@ -180,6 +179,5 @@ KanbanRoutes.delete("/deletesubtask/:taskid/:subtaskid", async (req, res) => {
     res.send({ msg: "Something went wrong", error: err });
   }
 });
-// ---------------------------------------------------------------------------
 
 module.exports = { KanbanRoutes }
